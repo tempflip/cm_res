@@ -1,0 +1,14 @@
+  <div ng-if="!loggedIn">
+    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+    </fb:login-button>
+  </div>
+
+  <div ng-if="loggedIn">
+    Welcome!
+  </div>
+
+  <div ng-if="notAuthorized">
+    You are not authorized by FB.
+  </div>
+
+</div>

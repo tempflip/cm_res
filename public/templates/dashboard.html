@@ -1,0 +1,93 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-3">
+			<ul class="nav nav-pills nav-stacked">
+				<li role="presentation" ng-class="{active : isHome}">
+					<a href="#" ng-click="navigate('home');">Home</a>
+				</li>
+
+				<li role="presentation" ng-class="{active : isTasks}" ng-click="navigate('tasks');">
+					<a href="#">Feladatok</a>
+				</li>
+
+				<li role="presentation" ng-class="{active : isJobs}" ng-click="navigate('jobs');">
+					<a href="#">Munkak</a>
+				</li>
+
+				<li role="presentation" ng-class="{active : isHallOfFame}" ng-click="navigate('hallOfFame');">
+					<a href="#">Hall of Fame</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="col-sm-9">
+			<div ng-if="isHome">
+				<h1>
+					Hello, {{user.firstName}}
+				</h1>
+			</div>
+
+			<div ng-if="isTasks">
+				<div ng-if="selectedTask != undefined">
+					<h1>
+						{{selectedTask.name}}
+						<span class="badge">
+							{{getLevelLabel(selectedTask.level);}}
+						</span>
+					</h1>
+
+					<p>
+						{{selectedTask.description}}
+					</p>
+
+					<textarea class="form-control">
+						{{selectedTask.code}}
+					</textarea>
+
+					<button class="btn btn-success" ng-click="true">
+						OK
+					</button>
+
+					<button class="btn btn-default" ng-click="cancelTask()">
+						Vissza
+					</button>
+				</div>
+
+				<div ng-if="selectedTask == undefined">
+					<table class="table">
+						<tr>
+							<th>Feladat</th>
+							<th>Szint</th>
+						</tr>
+
+						<tr ng-repeat="task in taskList">
+							<td>
+								<a ng-if="task.available" href="#" ng-click="selectTask(task._id)">
+									{{task.name}}
+								</a>
+								<span ng-if="!task.available">
+									{{task.name}}
+								</span>
+							</td>
+
+							<td>
+								<span class="badge">
+									{{getLevelLabel(task.level);}}
+								</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div ng-if="isJobs">
+				Jobs
+			</div>
+
+			<div ng-if="isHallOfFame">
+				Hall Of Fame
+			</div>
+		</div>
+	</div>
+
+</div>

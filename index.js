@@ -33,9 +33,9 @@ var User = mongoose.model('User', userSchema);
 "locale":"en_US",
 "name":"Peter Tempfli","timezone":1,"updated_time":"2014-09-21T10:29:12+0000","verified":true}*/
 
-app.get('/', function(request, response) {
-	response.send('Hello World!');
-});
+//app.get('/', function(request, response) {
+//	response.send('Hello World!');
+//});
 
 app.post('/login', function(req, res) {
 	res.setHeader('Content-type', 'application/json; charset="utf-8"');
@@ -59,12 +59,32 @@ app.post('/login', function(req, res) {
 			});
 		}
 	});
-
-
-	
-    
-
 });
+
+app.post('/tasks', function(req, res) {
+	res.setHeader('Content-type', 'application/json; charset="utf-8"');
+	var tasks = [
+			{	_id : '23232fcds',
+				name : 'Szumma',
+				description : 'Ez eleg egyszeru. Adj ossze ket szamot.',
+				available : true,
+				level : 0,
+				code : 'function case(x, y) { return; }'
+			}, 
+			{	_id : '444444444',
+				name : 'second task',
+				available : false,
+				level : 1,
+			}
+			{	_id : '13231321',
+				name : 'a hard task',
+				available : false,
+				level : 2,
+			}
+			];
+	res.send(JSON.stringify(tasks));
+});
+
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'));
