@@ -69,17 +69,22 @@ app.post('/tasks', function(req, res) {
 				description : 'Ez eleg egyszeru. Adj ossze ket szamot.',
 				available : true,
 				level : 0,
-				code : 'function case(x, y) { return; }'
+				code : 'function case(x, y) { return; }',
+				testCases : 'xxx'
 			}, 
 			{	_id : '444444444',
 				name : 'second task',
 				available : false,
 				level : 1,
-			}
+				code : 'dsadas',
+				testCases : 'xxx'
+			},
 			{	_id : '13231321',
 				name : 'a hard task',
 				available : false,
 				level : 2,
+				code : 'dsaddsadsaas',
+				testCases : 'xxx'
 			}
 			];
 	res.send(JSON.stringify(tasks));
