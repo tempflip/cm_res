@@ -28,7 +28,7 @@
 			</div>
 
 			<div ng-if="isTasks">
-				<div ng-if="selectedTask != undefined">
+				<div ng-if="selectedTask != undefined && !taskProcessing">
 					<h1>
 						{{selectedTask.name}}
 						<span class="badge">
@@ -40,17 +40,20 @@
 						{{selectedTask.description}}
 					</p>
 
-					<textarea class="form-control">
-						{{selectedTask.code}}
-					</textarea>
+					<textarea class="form-control codeArea" ng-model="selectedTask.code"></textarea>
 
-					<button class="btn btn-success" ng-click="true">
+					<button class="btn btn-success" ng-click="submitTask(selectedTask._id, selectedTask.code);">
 						OK
 					</button>
 
-					<button class="btn btn-default" ng-click="cancelTask()">
+					<button class="btn btn-default" ng-click="cancelTask();">
 						Vissza
 					</button>
+				</div>
+
+				<div ng-if="taskProcessing">
+					<img src="http://www.ajaxload.info/images/exemples/25.gif"/>
+					Dolgozunk...
 				</div>
 
 				<div ng-if="selectedTask == undefined">
@@ -89,5 +92,45 @@
 			</div>
 		</div>
 	</div>
+</div>
 
+
+<!-- Pass Modal -->
+<div class="modal fade" id="taskPassModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">
+        	Pass!
+        </h4>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Fail Modal -->
+<div class="modal fade" id="taskFailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">
+        	Fail :(
+        </h4>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>

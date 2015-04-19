@@ -21,7 +21,10 @@
 
 <div ng-app="adminApp" ng-controller="adminController">
   <div class="container">
-    <h1>Tasks</h1>
+    <h1>
+      Tasks
+      <button class="btn btn-standard" ng-click="newTask();" data-toggle="modal" data-target="#taskModal">New Task</button>
+    </h1>
 
     <table class="table">
       <tr>
@@ -51,7 +54,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">{{selectedTask.name}}</h4>
+        <h4 class="modal-title" id="myModalLabel">
+          <div class="input-group">
+            <span class="input-group-addon">Name</span>
+            <input type="text" class="form-control" ng-model="selectedTask.name" />
+          </div>
+        </h4>
       </div>
       <div class="modal-body">
         <div class="input-group">
@@ -59,8 +67,18 @@
           <input class="form-control" type="text" ng-model="selectedTask.level">
         </div>
 
+        <div class="input-group">
+          <span class="input-group-addon">Index</span>
+          <input class="form-control" type="text" ng-model="selectedTask.index">
+        </div>
+
         <span class="label label-default">Available</span>
         <input type="checkbox" ng-model="selectedTask.available">
+
+        <div>
+          <h5>Description</h5>
+          <textarea class="form-control" ng-model="selectedTask.description"></textarea>
+        </div>
         
         <div>
           <h5>Boilerplate</h5>
@@ -76,7 +94,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+        <button ng-click="updateTask(selectedTask);" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
       </div>
     </div>
   </div>

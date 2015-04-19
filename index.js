@@ -1,4 +1,5 @@
 var express = require('express');
+var vm = require('vm');
 var app = express();
 app.use(express.static(__dirname + '/public'));
 
@@ -21,8 +22,18 @@ var userSchema = mongoose.Schema({
     fbId : String
 });
 
-var User = mongoose.model('User', userSchema);
+var taskSchema = mongoose.Schema({
+	name : String,
+	description : String,
+	available : Boolean,
+	level : Number,
+	code : String,
+	testCases : String,	
+	index : Number
+});
 
+var User = mongoose.model('User', userSchema);
+var Task = mongoose.model('Task', taskSchema);
 
 /*{"id":"10206245802324789",
 "email":"tempflip@gmail.com",
@@ -63,32 +74,102 @@ app.post('/login', function(req, res) {
 
 app.post('/tasks', function(req, res) {
 	res.setHeader('Content-type', 'application/json; charset="utf-8"');
-	var tasks = [
-			{	_id : '23232fcds',
-				name : 'Szumma',
-				description : 'Ez eleg egyszeru. Adj ossze ket szamot.',
-				available : true,
-				level : 0,
-				code : 'function case(x, y) { return; }',
-				testCases : 'xxx'
-			}, 
-			{	_id : '444444444',
-				name : 'second task',
-				available : false,
-				level : 1,
-				code : 'dsadas',
-				testCases : 'xxx'
-			},
-			{	_id : '13231321',
-				name : 'a hard task',
-				available : false,
-				level : 2,
-				code : 'dsaddsadsaas',
-				testCases : 'xxx'
-			}
-			];
-	res.send(JSON.stringify(tasks));
+	Task.find({}, function(err, taskList) {
+		if(err) {
+			res.send('{}');
+			return;
+		}
+		res.send(JSON.stringify(taskList));
+	});
 });
+
+app.post('/updateTask', function(req, res) {
+	res.setHeader('Content-type', 'application/json; charset="utf-8"');
+	var myTask;
+	Task.find({_id : req.body._id}, function(err, taskList) {
+		if(err) {
+			res.send('{}');
+			return;
+		}
+		var myTask;
+		if (taskList.length > 0) {
+			myTask = taskList[0];
+		} else {
+			myTask = new Task();		
+		}
+		
+		myTask.name = req.body.name;
+		myTask.description = req.body.description;
+		myTask.available = req.body.available;
+		myTask.level = req.body.level;
+		myTask.code = req.body.code;
+		myTask.testCases = req.body.testCases;
+
+		myTask.save(function(err, newTask) {
+			if (err) {
+				res.send('{}');
+				return;				
+			}
+			console.log('### task updated')
+			res.send(JSON.stringify(newTask));
+		});
+	});
+});
+
+app.post('/submitTask', function(req, res) {
+	res.setHeader('Content-type', 'application/json; charset="utf-8"');
+	Task.find({_id : req.body._id}, function(err, taskList) {
+		if(err && taskList.length == 0) {
+			res.send('{}');
+			return;
+		}
+		var task = taskList[0];
+		var evalResult = codeEval(req.body.code, task.testCases);
+
+		var r = {
+			task : {
+				_id : task._id
+			},
+			eval : evalResult
+		}	
+		res.send(JSON.stringify(r));
+	});
+});
+
+var codeEval = function(code, testCases) {
+	console.log('### testing', code, testCases);
+	var r = {};
+
+	var sandbox = {};
+	vm.createContext(sandbox);
+	var testbox = {};
+	vm.createContext(testbox);
+
+	try {
+		vm.runInContext(code, sandbox);
+		r.codeSuccess = true;
+	} catch (err) {
+		r.codeSuccess = false;
+		r.codeError = err.message;
+	}
+	try {
+		vm.runInContext(testCases, testbox);
+		r.testSuccess = true;
+	} catch(err) {
+		r.testSuccess = false;
+		r.testError = err.message;
+	}
+
+	try {
+		sandbox.__test = testbox.__test;
+		r.pass = sandbox.__test();
+		r.testCaseSuccess = true;
+	} catch(err) {
+		r.testCaseSuccess = false;
+		r.pastCaseError = err.message;
+	}
+	return r;
+}
 
 
 app.listen(app.get('port'), function() {
