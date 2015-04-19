@@ -1,3 +1,5 @@
+var DEFAULT_SCORE = 10;
+
 var express = require('express');
 var vm = require('vm');
 var app = express();
@@ -29,24 +31,20 @@ var taskSchema = mongoose.Schema({
 	level : Number,
 	code : String,
 	testCases : String,	
-	index : Number
+	index : Number,
+	score : Number,
 });
+
+var rewardSchema = mongoose.Schema({
+	userId : String,
+	taskId : String,
+	score : Number,
+	name : String,
+})
 
 var User = mongoose.model('User', userSchema);
 var Task = mongoose.model('Task', taskSchema);
-
-/*{"id":"10206245802324789",
-"email":"tempflip@gmail.com",
-"first_name":"Peter",
-"gender":"male",
-"last_name":"Tempfli",
-"link":"https://www.facebook.com/app_scoped_user_id/10206245802324789/",
-"locale":"en_US",
-"name":"Peter Tempfli","timezone":1,"updated_time":"2014-09-21T10:29:12+0000","verified":true}*/
-
-//app.get('/', function(request, response) {
-//	response.send('Hello World!');
-//});
+var Reward = mongoose.model('Reward', rewardSchema);
 
 app.post('/login', function(req, res) {
 	res.setHeader('Content-type', 'application/json; charset="utf-8"');
@@ -102,6 +100,7 @@ app.post('/updateTask', function(req, res) {
 		myTask.description = req.body.description;
 		myTask.available = req.body.available;
 		myTask.level = req.body.level;
+		myTask.index = req.body.index != undefined ? req.body.index : 99999;
 		myTask.code = req.body.code;
 		myTask.testCases = req.body.testCases;
 
@@ -132,8 +131,25 @@ app.post('/submitTask', function(req, res) {
 			},
 			eval : evalResult
 		}	
+
+		logTaskSubmit(req.body.userId, task._id, req.body.code, evalResult.pass);
+		if (evalResult.pass == true) {
+			createReward(req.body.userId, task._id, task.name, task.score);
+		}
+
 		res.send(JSON.stringify(r));
 	});
+});
+
+app.post('/rewards', function(req, res) {
+	res.setHeader('Content-type', 'application/json; charset="utf-8"');
+	Reward.find({userId : req.body.userId}, function(err, rewardList) {
+		if (err) {
+			res.send('{error: err}');
+			return;
+		}
+		res.send(rewardList);
+	})
 });
 
 var codeEval = function(code, testCases) {
@@ -171,6 +187,20 @@ var codeEval = function(code, testCases) {
 	return r;
 }
 
+var logTaskSubmit = function(userId, taskId, code, pass) {
+	console.log('## logTaskSubmit', userId, taskId, code, pass);
+}
+
+var createReward = function(userId, taskId, name, score) {
+	console.log('## createReward', userId, taskId, score);
+	var myReward = new Reward({
+		userId : userId,
+		taskId : taskId,
+		name : name,
+		score : score != undefined ? score : DEFAULT_SCORE
+		});
+	myReward.save(function(err, task) {});
+}
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'));

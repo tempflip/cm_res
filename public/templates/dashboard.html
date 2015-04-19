@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="row">
-		<div class="col-sm-3">
+		<div class="col-sm-3 panel panel-default">
 			<ul class="nav nav-pills nav-stacked">
 				<li role="presentation" ng-class="{active : isHome}">
 					<a href="#" ng-click="navigate('home');">Home</a>
@@ -11,85 +11,209 @@
 				</li>
 
 				<li role="presentation" ng-class="{active : isJobs}" ng-click="navigate('jobs');">
-					<a href="#">Munkak</a>
+					<a href="#">Munkák</a>
 				</li>
 
 				<li role="presentation" ng-class="{active : isHallOfFame}" ng-click="navigate('hallOfFame');">
-					<a href="#">Hall of Fame</a>
+					<a href="#">A Ranglista</a>
 				</li>
 			</ul>
 		</div>
 
+
+		<!-- home -->
 		<div class="col-sm-9">
-			<div ng-if="isHome">
-				<h1>
-					Hello, {{user.firstName}}
-				</h1>
-			</div>
-
-			<div ng-if="isTasks">
-				<div ng-if="selectedTask != undefined && !taskProcessing">
+			<div class="panel panel-defaul" ng-if="isHome">
+				<div class="panel-body">
 					<h1>
-						{{selectedTask.name}}
-						<span class="badge">
-							{{getLevelLabel(selectedTask.level);}}
-						</span>
+						Hello, {{user.firstName}}!
 					</h1>
-
 					<p>
-						{{selectedTask.description}}
+						Hogy vagy? Nagyon örülünk, hogy benéztél hozzánk!
 					</p>
 
-					<textarea class="form-control codeArea" ng-model="selectedTask.code"></textarea>
+					<p ng-show="rewardList.length == 0">
+						Úgy tűnik, még nem oldottál meg egy feladatot sem. Azt javasoljuk, hogy kezd a 
+						<a href="#" ng-click="firstTask();">Bemelegítéssel</a> - ez egy nagyon egyszerű feladat, ahol megismerheted a rendszer működését.
+						<div>
+							<button class="btn btn-default" ng-click="firstTask();">
+								OK, Bemelegítek!
+							</button>
+						</div>
+					</p>
 
-					<button class="btn btn-success" ng-click="submitTask(selectedTask._id, selectedTask.code);">
-						OK
-					</button>
+					<p ng-show="rewardList.length > 0">
+						Nem érdekel a következő feladat? Szerintünk elég érdekes!
+						<br/>
+						<b>
+							<a href="#" ng-click="navigate('tasks');">{{recommendTask().name}}</a>
+						</b>
+					</p>
 
-					<button class="btn btn-default" ng-click="cancelTask();">
-						Vissza
-					</button>
-				</div>
+					</p>
 
-				<div ng-if="taskProcessing">
-					<img src="http://www.ajaxload.info/images/exemples/25.gif"/>
-					Dolgozunk...
-				</div>
+					<div class="row">
+						<div class="col-sm-7">
+							<p>
+								<h3>
+									<span class="badge" style="font-size: 400%">{{totalScore}}</span>
+									pontot gyüjtöttél eddig</h3>
+								<h4>
+									<span class="badge" style="font-size: 300%">{{rewardList.length}}</span>
+									feladatot oldottál meg
+								</h4>
+							</p>
 
-				<div ng-if="selectedTask == undefined">
-					<table class="table">
-						<tr>
-							<th>Feladat</th>
-							<th>Szint</th>
-						</tr>
+							<div class="progress" ng-show="rewardList.length > 0">
+							 	<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%;">
+							    {{progress}}
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<img class="img-responsive" src="assets/hacker-cat.jpg"/>
+						</div>
+					</div>
 
-						<tr ng-repeat="task in taskList">
-							<td>
-								<a ng-if="task.available" href="#" ng-click="selectTask(task._id)">
-									{{task.name}}
-								</a>
-								<span ng-if="!task.available">
-									{{task.name}}
-								</span>
-							</td>
+					<p ng-show="rewardList.length > 0">
+						<h2>Már ezeket a feladatokat megoldottad</h2>
+						<div ng-repeat="reward in rewardList">
+							<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
 
-							<td>
-								<span class="badge">
-									{{getLevelLabel(task.level);}}
-								</span>
-							</td>
-						</tr>
-					</table>
+							{{reward.name}}
+
+							<span class="badge">{{reward.score}}</span>
+						</div>
+					</p>
+
 				</div>
 			</div>
+			<!-- home end-->
 
-			<div ng-if="isJobs">
-				Jobs
-			</div>
+			<!-- tasks -->
+			<div class="panel panel-defaul" ng-if="isTasks">
+				<div class="panel-body">
+					<div ng-if="selectedTask != undefined && !taskProcessing">
+						<h1>
+							{{selectedTask.name}}
+							<span class="badge">
+								{{getLevelLabel(selectedTask.level);}}
+							</span>
+						</h1>
 
-			<div ng-if="isHallOfFame">
-				Hall Of Fame
+						<p>
+							<div ng-bind-html="selectedTask.description"></div>
+						</p>
+
+						<textarea class="form-control codeArea" ng-model="selectedTask.code"></textarea>
+
+						<button class="btn btn-success" ng-click="submitTask(selectedTask._id, selectedTask.code);">
+							OK
+						</button>
+
+						<button class="btn btn-default" ng-click="cancelTask();">
+							Vissza
+						</button>
+					</div>
+
+					<div ng-if="taskProcessing">
+						Dolgozunk...
+					</div>
+
+					<div ng-if="selectedTask == undefined">
+						<div class="row">
+							<div class="col-sm-8">
+								<p>
+								Ezek a megoldásra váró feladatok. Minden feladatot a böngészőben oldhatsz meg, semmit sem kell letöltened. A rendszer azonnal értékeli a megoldást, így láthatod, hogyan sikerült. Az sem baj, ha elsőre nem sikerül, bármennyiszer próbálkozhatsz.
+								</p>
+								<p>
+								Egy dolog még fontos: mivel most indultunk, egyelőre még csak kevés feladatunk van, és csak a JavaScript motor működik. Nagyon örülnénk, ha az oldal alján található szavazáson megjelölnéd, melyik nyelv legyen a követekező! Köszi!
+								</p>
+								<p>
+								(pro tipp: a JavaScript egy nagyon egyszerű nyelv! Ha nincs benne nagy tapasztalatod, akkor is vágj bele bátran, legalább lesz miért megtanulni :)
+								</p>
+							</div>
+
+							<div class="col-sm-4">
+								<img class="img-responsive" src="assets/lego_programmer.png"/>
+							</div>
+						</div>
+
+						<table class="table">
+							<tr>
+								<th>Feladat</th>
+								<th>Szint</th>
+							</tr>
+
+							<tr ng-repeat="task in taskList">
+								<td>
+									<a ng-if="task.available" href="#" ng-click="selectTask(task._id)">
+										{{task.name}}
+									</a>
+									<span ng-if="!task.available">
+										{{task.name}}
+									</span>
+								</td>
+
+								<td>
+									<span class="badge">
+										{{getLevelLabel(task.level);}}
+									</span>
+								</td>
+							</tr>
+						</table>
+
+						<iframe width="100%" height="100%" frameborder="0" allowtransparency="true" src="https://surveymonkey.com/r/RTLNY3T"></iframe>
+
+					</div>
+				</div>
 			</div>
+			<!-- tasks end -->
+
+			<!-- jobs -->
+			<div class="panel panel-defaul" ng-if="isJobs">
+				<div class="panel-body">
+					<h1>Találj munkát!</h1>
+
+						<div class="row">
+							<div class="col-sm-8">
+								<p>
+									Itt azokat a munkáltatókat fogjuk listázni, akik úgy döntöttek, hogy
+									előre felfedik magukat. Lesznek olyan feladatok is, amelyeket egy konkrét állással kapcsolatban oldhatsz meg.
+								</p>
+								<p>
+									Nemrégen indultunk, úgyhogy ez a rész még üres. Nagyon örülnénk, ha válaszolnál a következő két kérdésre. Köszönjük!
+								</p>
+
+
+							</div>
+
+							<div class="col-sm-4">
+								<img class="img-responsive" src="assets/working_cat.jpg"/>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<iframe width="100%" height="100%" frameborder="0" allowtransparency="true" src="https://surveymonkey.com/r/RFYQXX3"></iframe>
+							</div>
+							<div class="col-md-6">
+								<iframe width="100%" height="100%" frameborder="0" allowtransparency="true" src="https://surveymonkey.com/r/RTLNY3T"></iframe>
+							</div>
+						</div>
+
+
+				</div>
+			</div>
+			<!-- jobs end -->
+
+			<!-- hall of fame -->
+			<div class="panel panel-defaul" ng-if="isHallOfFame">
+				<div class="panel-body">
+					Hall Of Fame
+				</div>
+			</div>
+			<!-- hall of fame en -->
 		</div>
 	</div>
 </div>

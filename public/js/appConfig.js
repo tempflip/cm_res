@@ -2,6 +2,7 @@ var LOGIN_URL = 'http://localhost:8000/login';
 var TASKS_URL = 'http://localhost:8000/tasks';
 var UPDATE_TASK_URL = 'http://localhost:8000/updateTask';
 var SUBMIT_TASK_URL = 'http://localhost:8000/submitTask';
+var REWARDS_URL = 'http://localhost:8000/rewards';
 
 var levelLabel = {
 	0 : 'Könnyű',

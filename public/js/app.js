@@ -1,1 +1,1 @@
-var app = angular.module('cmApp', ['ngRoute']);
+var app = angular.module('cmApp', ['ngRoute', 'ngSanitize']);
