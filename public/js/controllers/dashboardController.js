@@ -1,12 +1,22 @@
 app.controller('dashboardController', function($scope, $q, $sce, authService, taskService, rewardService) {
+	var levelSet = [
+		{label : 'Pikachu', img : 'assets/l1.gif', upperLimit : 20},
+		{label : 'Mumin', img : 'assets/l2.gif', upperLimit : 100},
+		{label : 'Shongoku', img : 'assets/l3.gif', upperLimit : 200},
+		{label : 'Kockásfülü Nyúl', img : 'assets/l4.gif', upperLimit : 1000}
+	];
+
 	$scope.user = authService.getUser();
 	$scope.rewardList = [];
 	$scope.taskList = [];
+	$scope.isFirstTask = true;
+
 	$scope.navigate = function(page) {
 		$scope.isHome = false;
 		$scope.isTasks = false;
 		$scope.isJobs = false;
 		$scope.isHallOfFame = false;
+
 
 		$scope.selectedTask = undefined;
 		$scope.taskProcessing = false;
@@ -39,7 +49,18 @@ app.controller('dashboardController', function($scope, $q, $sce, authService, ta
 				if(d.eval.pass == true) {
 					taskPass(id);
 				} else {
-					taskFail(id);
+					var msg = ''
+					if (d.eval.codeSuccess == false) {
+						msg += d.eval.codeError + '; '
+					}
+					if (d.eval.testSuccess == false) {
+						msg += d.eval.testError + '; '
+					}
+					if (d.eval.testCaseSuccess == false) {
+						msg += d.eval.testCaseError + '; '
+					}
+					if (msg == '') { msg = undefined; }
+					taskFail(id, msg);
 				}
 			},
 			function(d) {
@@ -55,6 +76,22 @@ app.controller('dashboardController', function($scope, $q, $sce, authService, ta
 		return taskService.recommendTask();
 	}
 
+	$scope.getLevelSet = function(score) {
+		var level = levelSet[getLevelSetIndex(score)];
+		if (level == undefined) {
+			return undefined;
+		}
+		return level;
+	}
+
+	$scope.getNextLevelSet = function(score) {
+		var level = levelSet[getLevelSetIndex(score) + 1];
+		if (level == undefined) {
+			return undefined;
+		}
+		return level;
+	}
+
 	var taskPass = function(id) {
 		$scope.scoreGained = $scope.selectedTask.score;
 		$scope.selectedTask = taskService.selectTask(undefined);
@@ -64,8 +101,9 @@ app.controller('dashboardController', function($scope, $q, $sce, authService, ta
 		$('#taskPassModal').modal('show');
 	}
 
-	var taskFail = function(id) {
+	var taskFail = function(id, msg) {
 		$scope.taskProcessing = false;
+		$scope.failMessage = msg;
 		$('#taskFailModal').modal('show');
 	}
 
@@ -74,6 +112,10 @@ app.controller('dashboardController', function($scope, $q, $sce, authService, ta
 			.then(function(d) {
 				console.log(':: rewards', d);
 				$scope.rewardList = d;
+				if (d.length > 0) {
+					$scope.isFirstTask = false;
+					console.log('::: rew', d);
+				}
 				calculateScore();
 				calculateProgress();
 			},
@@ -102,6 +144,17 @@ app.controller('dashboardController', function($scope, $q, $sce, authService, ta
 			}, function(d) {
 				console.log(':: error: taskService.getTasks()', d);
 			});		
+	}
+
+	var getLevelSetIndex = function(score) {
+		var l;
+		for (var i = 0; i < levelSet.length; i++) {
+			if (score < levelSet[i].upperLimit) {
+				l = i;
+				break;
+			}
+		}
+		return l;
 	}
 
 	// init steps

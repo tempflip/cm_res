@@ -32,17 +32,19 @@
 						Hogy vagy? Nagyon örülünk, hogy benéztél hozzánk!
 					</p>
 
-					<p ng-show="rewardList.length == 0">
-						Úgy tűnik, még nem oldottál meg egy feladatot sem. Azt javasoljuk, hogy kezd a 
-						<a href="#" ng-click="firstTask();">Bemelegítéssel</a> - ez egy nagyon egyszerű feladat, ahol megismerheted a rendszer működését.
-						<div>
-							<button class="btn btn-default" ng-click="firstTask();">
-								OK, Bemelegítek!
-							</button>
-						</div>
-					</p>
+					<div ng-show="isFirstTask">
+						<p>
+							Úgy tűnik, még nem oldottál meg egy feladatot sem. Azt javasoljuk, hogy kezd a 
+							<a href="#" ng-click="firstTask();">Bemelegítéssel</a> - ez egy nagyon egyszerű feladat, ahol megismerheted a rendszer működését.
+							<div>
+								<button class="btn btn-default" ng-click="firstTask();">
+									OK, Bemelegítek!
+								</button>
+							</div>
+						</p>
+					</div>
 
-					<p ng-show="rewardList.length > 0">
+					<p ng-show="!isFirstTask">
 						Nem érdekel a következő feladat? Szerintünk elég érdekes!
 						<br/>
 						<b>
@@ -69,13 +71,22 @@
 							    {{progress}}
 								</div>
 							</div>
+
+							Gyűjts pontokat, hogy új szuperhős szintre léphessél! A következő szint
+							a 
+							<b>{{getNextLevelSet(totalScore).label}} </b>
+							és már csak 
+							<b>{{getLevelSet(totalScore).upperLimit - totalScore}} </b>
+							pontot kell gyűjtened, hogy elérd!
 						</div>
 						<div class="col-sm-5">
-							<img class="img-responsive" src="assets/hacker-cat.jpg"/>
+							<h4>Szuperhős szinted:</h4>
+							<h3>{{getLevelSet(totalScore).label}}</h3>
+							<img class="img-responsive" ng-src="{{getLevelSet(totalScore).img}}"/>
 						</div>
 					</div>
 
-					<p ng-show="rewardList.length > 0">
+					<div ng-show="!isFirstTask">
 						<h2>Már ezeket a feladatokat megoldottad</h2>
 						<div ng-repeat="reward in rewardList">
 							<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
@@ -84,7 +95,7 @@
 
 							<span class="badge">{{reward.score}}</span>
 						</div>
-					</p>
+					</div>
 
 				</div>
 			</div>
@@ -226,14 +237,33 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">
-        	Pass!
+        	Helyes!
         </h4>
       </div>
       <div class="modal-body">
 
+      	<div class="row">
+      		<div class="col-sm-6">
+      			Gratulálunk! Kiválóan oldottad meg a feladatot! 
+      			<b>{{scoreGained}}</b>
+      			pont a jutalmad.
+      			<p/>
+      			Ne állj le, oldj meg még több feladatot, hogy te legyél a legjobb!
+      			<p/>
+      			Tetszett? Üzend meg nekünk!
+
+      			<a href="https://twitter.com/intent/tweet?screen_name=geek_werk&text=Most%20oldottam%20meg%20egy%20feladatot%20%3A)" class="twitter-mention-button" data-size="large" data-related="geek_werk,geek_werk">Tweet to @geek_werk</a>
+				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+      		</div>
+
+      		<div class="col-sm-6">
+      			<img class="img-responsive" src="assets/happy_cat.jpg"/>
+      		</div>
+      	</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>
@@ -246,10 +276,37 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">
-        	Fail :(
+        	Jajj..sajnos nem.
         </h4>
       </div>
       <div class="modal-body">
+
+      	<div class="row">
+      		<div class="col-sm-6">
+				<p>
+					Valami nem stimmel a megoldásoddal.
+				<p/>
+
+				<p ng-if="failMessage">
+					Valószínűleg valamit elütöttél. Talán ez a hibaüzenet segít megtalálni a hibát:
+					<br/>
+					<span style="background: yellow">
+						{{failMessage}}
+					</span>
+				</p>
+
+				<p ng-if="!failMessage">
+					A kódod hibátlanul lefut, viszont a logika valahol hibás. Minden lehetőségre gondoltál?
+				</p>
+
+				<p>
+					De semmi baj, akárhányszor újra próbálkozhatsz!
+				</p>
+      		</div>
+
+      		<div class="col-sm-6">
+      			<img class="img-responsive" src="assets/unhappy_cat.jpg"/>
+      		</div>
 
       </div>
       <div class="modal-footer">

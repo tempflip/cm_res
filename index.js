@@ -100,6 +100,7 @@ app.post('/updateTask', function(req, res) {
 		myTask.description = req.body.description;
 		myTask.available = req.body.available;
 		myTask.level = req.body.level;
+		myTask.score = req.body.score;
 		myTask.index = req.body.index != undefined ? req.body.index : 99999;
 		myTask.code = req.body.code;
 		myTask.testCases = req.body.testCases;
@@ -178,11 +179,13 @@ var codeEval = function(code, testCases) {
 
 	try {
 		sandbox.__test = testbox.__test;
+		console.log(sandbox);
 		r.pass = sandbox.__test();
+		console.log(r.pass);
 		r.testCaseSuccess = true;
 	} catch(err) {
 		r.testCaseSuccess = false;
-		r.pastCaseError = err.message;
+		r.testCaseError = err.message;
 	}
 	return r;
 }
