@@ -14,7 +14,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 app.set('port', (process.env.PORT || 8000));
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+var dbEndpoint = process.env.MONGOLAB_URI || 'mongodb://localhost/test';
+mongoose.connect(dbEndpoint);
 
 var userSchema = mongoose.Schema({
 	name : String,
