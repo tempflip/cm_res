@@ -1,7 +1,30 @@
-  <div ng-if="!loggedIn">
-    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+  <div class="container" ng-if="!loggedIn">
+    <div class="jumbotron">
+    <h1>Üdvözlünk!</h1>
+
+    <p>
+    Lépj be a Facebook profiloddal.
+    </p>
+
+    <p>
+    <fb:login-button scope="public_profile,email"
+      data-max-rows="1"
+      data-size="xlarge" 
+      data-show-faces="true"
+      onlogin="checkLoginState();" max-rows>
     </fb:login-button>
+    </p>
+
+    <p>
+    Üzenőfaladra NEM FOGUNK postolni.
+    <br/>
+    Belépéseddel elfogadod, hogy adataidat kezeljük és értesítéseket küldhetünk.
+    <br/>
+    (Nem fogunk spammelni.) Az értesítéseket bármikor lemondhatod.
+    </p>
+    </div>
   </div>
+
 
   <div ng-if="loggedIn">
     Welcome!
