@@ -35,6 +35,7 @@ app.controller('dashboardController', function($scope, $q, $sce, authService, ta
 		$scope.taskProcessing = true;
 		taskService.submitTask(id, $scope.user._id, code)
 			.then(function(d) {
+				console.log(':: eval ', d);
 				if(d.eval.pass == true) {
 					taskPass(id);
 				} else {
@@ -55,7 +56,9 @@ app.controller('dashboardController', function($scope, $q, $sce, authService, ta
 	}
 
 	var taskPass = function(id) {
+		$scope.scoreGained = $scope.selectedTask.score;
 		$scope.selectedTask = taskService.selectTask(undefined);
+
 		$scope.taskProcessing = false;
 		getRewards();
 		$('#taskPassModal').modal('show');
