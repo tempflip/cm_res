@@ -89,7 +89,7 @@
 					<div ng-show="!isFirstTask">
 						<h2>Már ezeket a feladatokat megoldottad</h2>
 						<div ng-repeat="reward in rewardList">
-							<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+							<span class="glyphicon glyphicon-star" style="color: #18bc9c" aria-hidden="true"></span>
 
 							{{reward.name}}
 
@@ -135,7 +135,7 @@
 						<div class="row">
 							<div class="col-sm-8">
 								<p>
-								Ezek a megoldásra váró feladatok. Minden feladatot a böngészőben oldhatsz meg, semmit sem kell letöltened. A rendszer azonnal értékeli a megoldást, így láthatod, hogyan sikerült. Az sem baj, ha elsőre nem sikerül, bármennyiszer próbálkozhatsz.
+								Ezek a megoldásra váró feladatok. Minden feladatot a böngészőben oldhatsz meg, semmit sem kell letöltened. A rendszer azonnal értékeli a megoldást, így láthatod, hogyan sikerült. Az sem baj, ha elsőre nem sikerül, akárhányszor próbálkozhatsz.
 								</p>
 								<p>
 								Egy dolog még fontos: mivel most indultunk, egyelőre még csak kevés feladatunk van, és csak a JavaScript motor működik. Nagyon örülnénk, ha az oldal alján található szavazáson megjelölnéd, melyik nyelv legyen a követekező! Köszi!
@@ -154,21 +154,30 @@
 							<tr>
 								<th>Feladat</th>
 								<th>Szint</th>
+								<th>Pont</th>
 							</tr>
 
 							<tr ng-repeat="task in taskList">
 								<td>
-									<a ng-if="task.available" href="#" ng-click="selectTask(task._id)">
+									<a ng-if="task.available && task.completed == false" href="#" ng-click="selectTask(task._id)">
 										{{task.name}}
 									</a>
-									<span ng-if="!task.available">
+									<span ng-if="!task.available || task.completed == true">
 										{{task.name}}
 									</span>
+
+									<span ng-if="task.completed == true" class="glyphicon glyphicon-ok" aria-hidden="true" style="color: #18bc9c"></span>
 								</td>
 
 								<td>
 									<span class="badge">
 										{{getLevelLabel(task.level);}}
+									</span>
+								</td>
+
+								<td>
+									<span class="badge">
+										{{task.score}}
 									</span>
 								</td>
 							</tr>
@@ -221,7 +230,17 @@
 			<!-- hall of fame -->
 			<div class="panel panel-defaul" ng-if="isHallOfFame">
 				<div class="panel-body">
-					Hall Of Fame
+					<h1>Itt lesz hamarosan a ranglista</h1>
+					<h3>Te biztosan rajta lesze, nem?:)</h3>
+
+					<div class="row">
+						<div class="col-md-6">
+								<iframe width="100%" height="100%" frameborder="0" allowtransparency="true" src="https://surveymonkey.com/r/RFYQXX3"></iframe>
+						</div>
+						<div class="col-md-6">
+								<iframe width="100%" height="100%" frameborder="0" allowtransparency="true" src="https://surveymonkey.com/r/RTLNY3T"></iframe>
+						</div>
+					</div>
 				</div>
 			</div>
 			<!-- hall of fame en -->
@@ -252,8 +271,8 @@
       			<p/>
       			Tetszett? Üzend meg nekünk!
 
-      			<a href="https://twitter.com/intent/tweet?screen_name=geek_werk&text=Most%20oldottam%20meg%20egy%20feladatot%20%3A)" class="twitter-mention-button" data-size="large" data-related="geek_werk,geek_werk">Tweet to @geek_werk</a>
-				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+			<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://geekwerk.herokuapp.com/" data-text="Megoldottam egy feladatot!" data-via="geekwerk" data-size="large" data-related="geekwerk" data-hashtags="javascript">Tweet</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
       		</div>
 

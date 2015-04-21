@@ -1,11 +1,12 @@
-app.factory('taskService', function($q, $http) {
+app.factory('taskService', function($q, $http, authService) {
 	var factory = {};
 	var taskList = [];
 	var currentTask;
 
 	factory.getTasks = function() {
 		var deferred = $q.defer();
-		$http.post(TASKS_URL, {})
+		var userId = authService.getUser()._id;
+		$http.post(TASKS_URL, {userId : userId})
 			.success(function(d) {
 				taskList = d;
 				taskList.sort(function(a, b) {
@@ -13,6 +14,7 @@ app.factory('taskService', function($q, $http) {
 					if (a.index < b.index) return -1;
 					return 0;
 				});
+				console.log(':: taskList', taskList);
 				deferred.resolve(taskList);
 			})
 			.error(function(d) {
@@ -55,7 +57,8 @@ app.factory('taskService', function($q, $http) {
 	}
 
 	factory.recommendTask = function() {
-		return _.sample(taskList);
+		console.lo
+		return _.sample(_.filter(taskList,function(e) {return e.completed == false;}));
 	}
 
 	return factory;
