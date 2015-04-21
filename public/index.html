@@ -1,45 +1,50 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-sanitize.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <script src="js/app.js"></script>
-  <script src="js/appConfig.js"></script>
-  <script src="js/services/authService.js"></script>
-  <script src="js/services/taskService.js"></script>
-  <script src="js/services/rewardService.js"></script>
+    <title>geek_werk</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
-  <script src="js/controllers/router.js"></script>
-  <script src="js/controllers/loginController.js"></script>
-  <script src="js/controllers/dashboardController.js"></script>
+    <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/freelancer.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 
-  <base href="/">
-  
-  <style>
-    body {
-      background-color: #18bc9c ;
-    }
 
-    .monospace {
-      font-family: "Lucida Console", Monaco, monospace;
-    }
 
-    .codeArea {
-      font-family: "Lucida Console", Monaco, monospace;
-      height: 300px !important;
-    }
-  </style>
+
+
+
+    <!-- Custom Fonts -->
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 </head>
 
+<body id="page-top" class="index">
 
-   <nav class="navbar navbar-default ">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -51,53 +56,219 @@
                 </button>
                 <a class="navbar-brand" href="#page-top">geek_werk</a>
             </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#intro">Mi ez?</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#platform">A platform</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="app.html">Login</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
+        <!-- /.container-fluid -->
     </nav>
 
-<body ng-app="cmApp" ng-controller="routeController">
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 name">
+                    <h2>
+                        Hackelj és találj munkát.
+                    </h2>
 
-<div ng-view id="view">
-  
-</div>
+
+                    <p>
+                        Programozz, oldj meg érdekes feladatokat.
+                    </p>
+
+                    <p>
+                        Tornáztasd az agyadat.
+                    </p>
+
+                    <p>
+                        Szerezz munkát.
+                    </p>
+
+                    <p>
+                        <button onclick="location.href='app.html';" class="btn btn-xl">Regisztrálok</button>
+                    </p>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <img class="img-responsive" src="assets/lego_programmer.png"/>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Portfolio Grid Section -->
+    <section id="intro">
+        <div class="container">
+            </div>
+
+            <div class="row" style="margin-left:10px; margin-right:10px;">
+                <div class="col-sm-4">
+                    <img class="img-responsive" src="assets/nintendo.png" alt="">
+                </div>
+
+                <div class="col-sm-8">
+                    <h2>Mi ez?</h2>
+                    <p>
+                    Létrehoztunk egy <b>webes platformot</b>, ahol érdekes programozási feladatokat oldhatsz meg a kedvenc nyelvedben. Miután sikeresen vettél egy akadályt, pontokat kapsz, és pontosan látod, hol állsz a ranglistán. Megmutathatod, hogy <b>te vagy a legjobb programozó</b>, de ez persze nem lesz egyszerű ;)
+                    </p>
+                    <p>
+                    De ez még nem minden. Azon kívűl, hogy jól szórakozol és edzésben tartod az agyadat, <b>mi tudunk pár helyet, ahol éppen programozókat keresnek.</b> A legjobbakat. Szóval, minél magasabbra kapaszkosz a ranglistán, annál több esélyed van arra, hogy megtaláljanak a legmenőbb munkákkal.
+                    </p>
+
+                    <p>
+                        <button onclick="location.href='app.html';" class="btn btn-xl">Regisztrálok</button>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="success" id="platform">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 ">
+                    <h2>A platform</h2>
+                    <p>
+                        Na jó, de hogyan működik? Nem túl bonyolult, lényeg a következő. Nem kell letöltened semmit. <b>A kódot a böngészőben írod meg</b>, elküldöd, a rendszer pedig értékeli. Vagyis, <b>azonnal látod</b>, hogyan sikerült a megoldásod.
+                    </p>
+
+                    <p>
+                        <b>Ha pedig akad egy állásajánlat</b>, ami pont hozzád passzol, akkor azonnal szólunk.  Minél több pontot szerzel, annál népszerűb leszel a munkáltatók körében !
+                    </p>
+
+                    <p>
+                        <button onclick="location.href='app.html';" class="btn btn-xl">Regisztrálok</button>
+                    </p>
+
+                </div>
+
+                <div class="col-sm-4">
+                    <img class="img-responsive" src="assets/terminal.png" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="signup">
+        <div class="container">
+            </div>
+
+            <div class="row" style="margin-left:10px; margin-right:10px;">
+                <div class="col-sm-4">
+                    <img class="img-responsive" src="assets/mac.png" alt="">
+                </div>
+
+                <div class="col-sm-8">
+                    <h2>Jól hanzik?</h2>
+                    <p>
+                        Hát persze hogy jól hangzik!
+                    </p>
+
+                    <p>
+                        <b>Az adataidat bizalmasak kezeljük</b>, hiszen a munkakeresés bizalmas dolog. Csak akkor adjuk ki egy munkáltatónak, ha előtte te is beleegyezel. 
+                    </p>
+                    
+                    <p>
+                        Akkor is szeretettel várunk, ha eszed ágában sincs munkát váltani, csak szeretsz játszani és programozni.                   
+                    </p>       
+
+                    <p>
+                        <button onclick="location.href='app.html';" class="btn btn-xl">Regisztrálok</button>
+                    </p>    
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="footer-above">
+            <div class="container">
+                <div class="row">
+                    <div class="footer-col col-md-6">
+                        <h3>geek_werk</h3>
+                    </div>
+                    <!--
+                    <div class="footer-col col-md-4">
+                        <h3>Around the Web</h3>
+                        <ul class="list-inline">
+                            <li>
+                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-google-plus"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-linkedin"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-dribbble"></i></a>
+                            </li>
+                        </ul>
+                    </div>-->
+                    <div class="footer-col col-md-6">
+                        <h3>Kapcsolat</h3>
+                        <p>
+                            geek_werk@email.com
+                            <br>
+                            +44 7476746614
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-below">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        &copy; geek_werk 2015
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top page-scroll visible-xs visible-sm">
+        <a class="btn btn-primary" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+
+ 
+    <!--
+    <script src="js/bootstrap.min.js"></script>
+    -->
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="js/bootstrap/classie.js"></script>
+    <script src="js/bootstrap/cbpAnimatedHeader.js"></script>
 
 
-<script>
-  // This is called with the results from from FB.getLoginStatus().
-  function statusChangeCallback(response) {
-    console.log('statusChangeCallback');
-    angular.element(document.getElementById('view')).scope().fbLogin(response);
-  }
-
-  function checkLoginState() {
-    FB.getLoginStatus(function(response) {
-      statusChangeCallback(response);
-    });
-  }
-
-  window.fbAsyncInit = function() {
-  FB.init({
-    appId      : '1584826841759329',
-    cookie     : true,  // enable cookies to allow the server to access 
-                        // the session
-    xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.3' // use version 2.2
-  });
-
-  FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-  });
-
-  };
-
-  var fbInit = function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }
-
-</script>
+    <script src="js/bootstrap/freelancer.js"></script>
 
 </body>
+
 </html>
