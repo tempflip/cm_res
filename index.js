@@ -191,33 +191,34 @@ app.post('/rewards', function(req, res) {
 });
 
 var codeEval = function(code, testCases) {
-	console.log('### testing', code, testCases);
+	var MAX_RUNNING_TIME = '2000';
 	var r = {};
 
 	var sandbox = {};
 	vm.createContext(sandbox);
-	var testbox = {};
-	vm.createContext(testbox);
 
 	try {
-		vm.runInContext(code, sandbox);
+		vm.runInNewContext(code, sandbox, {timeout : MAX_RUNNING_TIME});
 		r.codeSuccess = true;
 	} catch (err) {
 		r.codeSuccess = false;
 		r.codeError = err.message;
 	}
 	try {
-		vm.runInContext(testCases, testbox);
+		vm.runInNewContext(testCases, sandbox, {timeout : MAX_RUNNING_TIME});
 		r.testSuccess = true;
 	} catch(err) {
 		r.testSuccess = false;
 		r.testError = err.message;
 	}
 
+	if (r.codeSuccess == false || r.testSuccess == false) {
+		return r;
+	}
+
 	try {
-		sandbox.__test = testbox.__test;
 		console.log(sandbox);
-		r.pass = sandbox.__test();
+		r.pass = sandbox.__result;
 		console.log(r.pass);
 		r.testCaseSuccess = true;
 	} catch(err) {
