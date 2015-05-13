@@ -1,0 +1,147 @@
+Bemelegítés
+
+Ez a faladat nagyon könnyű, arra szolgál, hogy megismerd a rendszer működését. Nem lesz nehéz.
+<p/>
+A lent található szövegmezőben kell megoldanot a feladatot, JavaScript nyelven. A legtöbbször egy függvényt kell írnod, ami valamilyen feladatot hajt végre. Például, most a következőt:
+<p/>
+
+<b>Írj függvényt, ami kiszámítja egy szám négyzetét. </b>
+<p/>
+
+A vázlatot már megírtuk. A lényeg, hogy a 'return' utasítás a megfelelő értékkel térjen vissza. Ez előtt bármilyen utasításokat adhatsz, bár arra figyelj, hogy (egyelőre) semmilyen library nem áll rendelkezésre. Szóval, színtiszta JavaScript. Az is fontos, hogy NEM férsz hozzá a console-hoz, így a 'console.log' utasítást sem használhatod.
+<p/>
+
+Még egy dolog fontos: NE változtasd meg a függvény nevét -- ez most f(x) -- mert a tesztek, amelyek értékelik a megoldásodat, erre a névre számítanak.
+<p/>
+
+Tehát, megoldásra fel!
+
+<p/>
+(pro tipp: a jelenlegi formájában a függvény x-szel tér vissza, vagyis nem csinál túlságosan sok mindent. Egy szám négyzetét úgy tudod kiszámítani, ha megszorzod önmagával, vagyis : x * x)
+
+function f(x) {
+ return x;
+}
+
+function __test() {
+    return this.f(5) == 25;
+}
+
+
+
+---------------------------
+
+Oda-Vissza
+
+Ez sem lesz túl nehéz... A feladat:
+<p/>
+
+<b>
+Írj függvény, ami bemenetként egy listát(Array) fogad , és egy másik listával tér vissza, ami az eredeti lista elemeit, majd az eredeti lista elemeit fordított sorrendben tartalmazza.
+</b>
+<p/>
+
+
+Például:<br/>
+<p class="monospace">
+f([1,2,3,4]) -> [1,2,3,4,4,3,2,1]<br/>
+f(['a', 'b', 'c']) -> ['a', 'b', 'c', 'c', 'b', 'a'];
+</p>
+
+function f(x) {
+	var myArray;
+	// itt ird meg kododat!
+	return myArray;
+}
+
+function __test() {
+	return this.f([1,2,3]) == [1, 2, 3, 3, 2, 1];
+}
+
+
+---------------------------
+
+Anagramma
+
+Írj olyan függvényt, ami eldönti, hogy két szöveg egymás anagrammái-e.
+<p/>
+Na jó, de mi az az anagramma? Egyszerű: az eredeti szó betűiből új szavakat képezünk (és az összeset felhasználjuk).
+<p/>
+
+Például:
+<p/>
+
+listen - silent 
+replay - parsley 
+players - parsley 
+discriminator - doctrinarism 
+<p/>
+
+Tehát:
+<p/>
+
+<p class="monospace">
+f('listen', 'silent') -> true
+d('geek', 'werk') -> false
+</p>
+
+function f(a, b) {
+	// itt dontsd el, hogy 'a' es 'b' egymas anagrammai-e
+	// 
+	// majd terj vissza egy 'true'-val vagy egy 'false'-szal
+}
+
+function __test() {
+	return this.f('aabbcc', 'abcabc') == true;
+}
+
+----------------------------
+
+Prímek
+
+Egy klasszikus. f(x) függvény számolja ki az összes prím számot, amelyek kisebbek vagy egyenlőek x-szel. Egy listát várunk.
+<p/>
+Tehát:
+
+<p class="monospace">
+f(20) -> [2, 3, 5, 7, 11, 13, 17, 19]
+</p>
+
+function f(x) {
+	var primes;
+	// itt ird meg kododat!
+	return primes;
+}
+
+function __test() {
+	return false;
+}
+
+------------
+
+
+Kettő hatványa?
+
+Írj f(x) függvényt, amely eldönti x-ről, hogy 2 hatványa-e.
+Tehát:
+<p/>
+<p class="monospace">
+f(4) -> true
+f(256) -> true
+f(9) -> false
+</p>
+
+function f(x) {
+	// itt ird meg kododat!
+	// terj vissza true-val vagy false-szal!
+}
+
+function __test() {
+	return this.f(16) == true && this(99) == false;
+}
+
+
+
+
+
+

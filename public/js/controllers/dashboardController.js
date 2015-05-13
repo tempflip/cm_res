@@ -98,6 +98,7 @@ app.controller('dashboardController', function($scope, $q, $sce, authService, ta
 
 		$scope.taskProcessing = false;
 		getRewards();
+		getTasks();
 		$('#taskPassModal').modal('show');
 	}
 

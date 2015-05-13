@@ -34,6 +34,7 @@ var taskSchema = mongoose.Schema({
 	testCases : String,	
 	index : Number,
 	score : Number,
+	completed : Boolean
 });
 
 var rewardSchema = mongoose.Schema({
@@ -41,11 +42,19 @@ var rewardSchema = mongoose.Schema({
 	taskId : String,
 	score : Number,
 	name : String,
-})
+});
+
+var solutionSchema = mongoose.Schema({
+	userId : String,
+	taskId : String,
+	pass : Boolean,
+	code : String
+});
 
 var User = mongoose.model('User', userSchema);
 var Task = mongoose.model('Task', taskSchema);
 var Reward = mongoose.model('Reward', rewardSchema);
+var Solution = mongoose.model('Solution', solutionSchema);
 
 app.post('/login', function(req, res) {
 	res.setHeader('Content-type', 'application/json; charset="utf-8"');
@@ -73,12 +82,31 @@ app.post('/login', function(req, res) {
 
 app.post('/tasks', function(req, res) {
 	res.setHeader('Content-type', 'application/json; charset="utf-8"');
-	Task.find({}, function(err, taskList) {
-		if(err) {
-			res.send('{}');
+
+	var getTaskList = function(rewardList) {
+		Task.find({}, function(err, taskList) {
+			if(err) {
+				res.send('{}');
+				return;
+			}
+
+			taskList.forEach(function(task) {
+				task.completed = false;
+				rewardList.forEach(function(reward) {
+					if (reward.taskId == task._id) { task.completed = true;}
+				});
+			});
+
+			res.send(JSON.stringify(taskList));
+		});		
+	};	
+
+	Reward.find({userId : req.body.userId}, function(err, rewardList) {
+		if (err) {
+			res.send('{error: err}');
 			return;
 		}
-		res.send(JSON.stringify(taskList));
+		getTaskList(rewardList);
 	});
 });
 
@@ -127,6 +155,14 @@ app.post('/submitTask', function(req, res) {
 		var task = taskList[0];
 		var evalResult = codeEval(req.body.code, task.testCases);
 
+		var solution = new Solution({
+			taskId : task._id,
+			userId : req.body.userId,
+			pass : evalResult.pass,
+			code : req.body.code
+		})
+		insertSolution(solution);
+
 		var r = {
 			task : {
 				_id : task._id
@@ -155,33 +191,34 @@ app.post('/rewards', function(req, res) {
 });
 
 var codeEval = function(code, testCases) {
-	console.log('### testing', code, testCases);
+	var MAX_RUNNING_TIME = '2000';
 	var r = {};
 
 	var sandbox = {};
 	vm.createContext(sandbox);
-	var testbox = {};
-	vm.createContext(testbox);
 
 	try {
-		vm.runInContext(code, sandbox);
+		vm.runInNewContext(code, sandbox, {timeout : MAX_RUNNING_TIME});
 		r.codeSuccess = true;
 	} catch (err) {
 		r.codeSuccess = false;
 		r.codeError = err.message;
 	}
 	try {
-		vm.runInContext(testCases, testbox);
+		vm.runInNewContext(testCases, sandbox, {timeout : MAX_RUNNING_TIME});
 		r.testSuccess = true;
 	} catch(err) {
 		r.testSuccess = false;
 		r.testError = err.message;
 	}
 
+	if (r.codeSuccess == false || r.testSuccess == false) {
+		return r;
+	}
+
 	try {
-		sandbox.__test = testbox.__test;
 		console.log(sandbox);
-		r.pass = sandbox.__test();
+		r.pass = sandbox.__result;
 		console.log(r.pass);
 		r.testCaseSuccess = true;
 	} catch(err) {
@@ -204,6 +241,10 @@ var createReward = function(userId, taskId, name, score) {
 		score : score != undefined ? score : DEFAULT_SCORE
 		});
 	myReward.save(function(err, task) {});
+}
+
+var insertSolution = function(solution) {
+	solution.save(function(err, task) {});
 }
 
 app.listen(app.get('port'), function() {
